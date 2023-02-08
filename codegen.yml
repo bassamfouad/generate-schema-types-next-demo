@@ -1,0 +1,12 @@
+schema: schema.graphql
+overwrite: true
+
+generates:
+  src/utils/types_gen.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+    config:
+      avoidOptionals: false
+      nonOptionalTypename: true
+      typesPrefix: IGen

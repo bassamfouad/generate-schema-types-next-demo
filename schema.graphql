@@ -1,0 +1,202 @@
+type Asset {
+  _meta: CaisyDocument_Meta
+  author: String
+  copyright: String
+  description: String
+  dominantColor: String
+  id: ID
+  keywords: String
+  originType: String
+  originalName: String
+  src: String
+  title: String
+}
+
+type Asset_Connection {
+  edges: [Asset_ConnectionEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+type Asset_ConnectionEdge {
+  cursor: String
+  node: Asset
+}
+
+input Asset_CreateInput {
+  author: String
+  dominantColor: String
+  title: String
+  description: String
+  keywords: String
+  originType: String
+  originalName: String
+  copyright: String
+  src: String
+}
+
+input Asset_Sort {
+  author: Order
+  keywords: Order
+  copyright: Order
+  dominantColor: Order
+  title: Order
+  description: Order
+  originalName: Order
+  originType: Order
+}
+
+input Asset_UpdateInput {
+  dominantColor: String
+  src: String
+  description: String
+  author: String
+  keywords: String
+  originalName: String
+  originType: String
+  copyright: String
+  title: String
+}
+
+input Asset_Where {
+  AND: [Asset_Where]
+  keywords: CaisyField_String_Where
+  originalName: CaisyField_String_Where
+  title: CaisyField_String_Where
+  originType: CaisyField_String_Where
+  description: CaisyField_String_Where
+  author: CaisyField_String_Where
+  OR: [Asset_Where]
+  copyright: CaisyField_String_Where
+  dominantColor: CaisyField_Color_Where
+}
+
+type BlogArticle {
+  _meta: CaisyDocument_Meta
+  id: ID
+  slug: String
+  text: JSON
+  title: String
+}
+
+type BlogArticle_Connection {
+  edges: [BlogArticle_ConnectionEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+type BlogArticle_ConnectionEdge {
+  cursor: String
+  node: BlogArticle
+}
+
+input BlogArticle_CreateInput {
+  title: String
+  slug: String
+  text: JSON
+}
+
+input BlogArticle_Sort {
+  title: Order
+  slug: Order
+}
+
+input BlogArticle_UpdateInput {
+  text: JSON
+  title: String
+  slug: String
+}
+
+input BlogArticle_Where {
+  OR: [BlogArticle_Where]
+  AND: [BlogArticle_Where]
+  title: CaisyField_String_Where
+  slug: CaisyField_String_Where
+  text: CaisyField_Richtext_Where
+}
+
+type CaisyDocument_Meta {
+  createdAt: DateTime
+  id: ID
+  locale: String
+  locales: [String]
+  publishedAt: DateTime
+  updatedAt: DateTime
+}
+
+input CaisyField_Color_Where {
+  contains: String
+  neq: String
+  eq: String
+}
+
+input CaisyField_Richtext_Where {
+  neq: String
+  eq: String
+  contains: String
+}
+
+input CaisyField_String_Where {
+  neq: String
+  eq: String
+  contains: String
+}
+
+"""
+The `DateTime` scalar type represents a DateTime. The DateTime is serialized as an RFC 3339 quoted string
+"""
+scalar DateTime
+
+"""Any JSON value"""
+scalar JSON
+
+type Mutation {
+  createAsset(locale: String, input: Asset_CreateInput!): Asset
+  createBlogArticle(locale: String, input: BlogArticle_CreateInput!): BlogArticle
+  deleteAsset(
+    """Accepts hashid or UUID"""
+    id: ID!
+  ): Boolean
+  deleteBlogArticle(
+    """Accepts hashid or UUID"""
+    id: ID!
+  ): Boolean
+  updateAsset(
+    """documentID"""
+    id: ID!
+
+    """Merge updated input (instead of replacing)"""
+    merge: Boolean = true
+    input: Asset_UpdateInput!
+    locale: String
+  ): Asset
+  updateBlogArticle(
+    """documentID"""
+    id: ID!
+
+    """Merge updated input (instead of replacing)"""
+    merge: Boolean = true
+    input: BlogArticle_UpdateInput!
+    locale: String
+  ): BlogArticle
+}
+
+enum Order {
+  ASC
+  DESC
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean
+  hasPreviousPage: Boolean
+  startCursor: String
+}
+
+type Query {
+  Asset(id: ID!, locale: String): Asset
+  BlogArticle(id: ID!, locale: String): BlogArticle
+  allAsset(sort: [Asset_Sort], where: [Asset_Where], first: Int, before: String, after: String, last: Int, locale: String): Asset_Connection
+  allBlogArticle(sort: [BlogArticle_Sort], where: [BlogArticle_Where], first: Int, before: String, after: String, last: Int, locale: String): BlogArticle_Connection
+}
+
